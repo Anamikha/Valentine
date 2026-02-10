@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(to bottom, #fdecef, #f9dbe5); /* Option 2 blush */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia, serif;
+  overflow: hidden;
+}
+
+/* Floating hearts & petals */
+.float {
+  position: absolute;
+  bottom: -70px;
+  font-size: 20px;
+  animation: floatUp linear infinite;
+  opacity: 0.75;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-140vh); }
+}
+
+/* Envelope with GOLD + PINK soft glow */
+.envelope {
+  width: 420px;
+  height: 290px;
+  background: #f8c8dc;
+  border-radius: 18px;
+  position: relative;
+  box-shadow:
+    0 0 25px rgba(255,215,0,0.3),
+    0 0 40px rgba(244,166,193,0.7),
+    0 0 110px rgba(244,166,193,0.55);
+  animation: glow 5s ease-in-out infinite;
+  overflow: hidden;
+}
+
+@keyframes glow {
+  0%,100% {
+    box-shadow:
+      0 0 20px rgba(255,215,0,0.25),
+      0 0 35px rgba(244,166,193,0.65),
+      0 0 90px rgba(244,166,193,0.5);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(255,215,0,0.35),
+      0 0 55px rgba(244,166,193,0.9),
+      0 0 140px rgba(244,166,193,0.75);
+  }
+}
+
+/* Top flap */
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 210px solid transparent;
+  border-right: 210px solid transparent;
+  border-top: 115px solid #f4a6c1;
+  transform-origin: top;
+  transition: transform 1s ease;
+  z-index: 3;
+}
+
+.open .flap {
+  transform: rotateX(180deg);
+}
+
+/* Letter */
+.letter {
+  position: absolute;
+  top: 55px;
+  left: 25px;
+  right: 25px;
+  height: 220px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 26px;
+  box-sizing: border-box;
+  transform: translateY(70px);
+  opacity: 0;
+  transition: transform 1.2s ease, opacity 1.2s ease;
+  z-index: 1;
+}
+
+.open .letter {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* MAIN HEART — denial shake, higher placement */
+.main-heart {
+  position: absolute;
+  top: 90px; /* moved higher */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 50px;
+  cursor: pointer;
+  z-index: 4;
+  animation: denial 1.8s infinite linear;
+  transition: top 1s ease, transform 1s ease;
+}
+
+@keyframes denial {
+  0%   { transform: translateX(-50%) rotate(0deg); }
+  25%  { transform: translateX(-54%) rotate(-8deg); }
+  50%  { transform: translateX(-50%) rotate(0deg); }
+  75%  { transform: translateX(-46%) rotate(8deg); }
+  100% { transform: translateX(-50%) rotate(0deg); }
+}
+
+/* Heart moves to flap tip */
+.open .main-heart {
+  top: 0px; /* flap tip */
+  animation: none;
+  transform: translateX(-50%) scale(0.9);
+}
+
+/* Next-page heart (clickable) */
+.next-heart {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  font-size: 48px; /* slightly bigger */
+  opacity: 0;
+  animation: subtleShake 2s infinite;
+  transition: opacity 0.6s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.show-next {
+  opacity: 1;
+}
+
+@keyframes subtleShake {
+  0%,100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Floating elements -->
+<div class="float" style="left:5%;  animation-duration:11s;">🤎</div>
+<div class="float" style="left:12%; animation-duration:14s;">🌸</div>
+<div class="float" style="left:20%; animation-duration:12s;">💗</div>
+<div class="float" style="left:28%; animation-duration:15s;">🤍</div>
+<div class="float" style="left:36%; animation-duration:10s;">🌹</div>
+<div class="float" style="left:44%; animation-duration:13s;">🌼</div>
+<div class="float" style="left:52%; animation-duration:16s;">💖</div>
+<div class="float" style="left:60%; animation-duration:12s;">💛</div>
+<div class="float" style="left:68%; animation-duration:14s;">🌷</div>
+<div class="float" style="left:76%; animation-duration:11s;">❤️</div>
+<div class="float" style="left:84%; animation-duration:15s;">💕</div>
+<div class="float" style="left:92%; animation-duration:13s;">🩶</div>
+<div class="float" style="left:92%; animation-duration:12s;">🥰</div>
+<div class="float" style="left:92%; animation-duration:15s;">🩵</div>
+
+<!-- Envelope -->
+<div class="envelope" id="env">
+
+  <div class="flap"></div>
+
+  <div class="letter">
+    <h2 style="margin-top:0;">Hi Aswin 💗</h2>
+    <p style="font-size:17px; line-height:1.6;">
+      Four Valentine’s Days Together!! 🥰<br>
+      & it still feels close to my heart 💕🥺
+    </p>
+
+    <!-- clickable next heart -->
+    <a href="page2.html" id="nextHeart" class="next-heart">💘</a>
+  </div>
+
+  <div class="main-heart" onclick="openEnv()">🤍</div>
+
+</div>
+
+<script>
+function openEnv() {
+  document.getElementById("env").classList.add("open");
+
+  // Show next page heart after 2 seconds
+  setTimeout(() => {
+    document.getElementById("nextHeart").classList.add("show-next");
+  }, 2000);
+}
+</script>
+
+</body>
+</html>
