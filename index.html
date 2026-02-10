@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #fff0f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia, serif;
+  overflow: hidden;
+}
+
+/* Floating hearts & petals */
+.float {
+  position: absolute;
+  bottom: -50px;
+  font-size: 22px;
+  animation: floatUp 8s linear infinite;
+  opacity: 0.75;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-120vh); }
+}
+
+/* Envelope */
+.envelope {
+  width: 340px;
+  height: 230px;
+  background: #f8c8dc;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 18px 35px rgba(0,0,0,0.2);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Top triangular flap */
+.flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-top: 90px solid #f4a6c1;
+  transition: transform 0.8s ease;
+  transform-origin: top;
+  z-index: 3;
+}
+
+.open .flap {
+  transform: rotateX(180deg);
+}
+
+/* Inner letter */
+.letter {
+  position: absolute;
+  top: 35px;
+  left: 15px;
+  right: 15px;
+  height: 180px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 18px;
+  box-sizing: border-box;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform 1s ease, opacity 1s ease;
+  z-index: 1;
+}
+
+.open .letter {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Heart */
+.open-heart {
+  position: absolute;
+  top: 95px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 42px;
+  cursor: pointer;
+  animation: pulse 1.2s infinite;
+  z-index: 4;
+  transition: top 0.8s ease, transform 0.8s ease;
+}
+
+/* Heart moves to flap tip */
+.open .open-heart {
+  top: 6px;
+  animation: none;
+  transform: translateX(-50%) scale(0.9);
+}
+
+
+@keyframes pulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.25); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Floating hearts & petals -->
+<div class="float" style="left:5%; animation-delay:0s;">❤️</div>
+<div class="float" style="left:12%; animation-delay:1s;">🌸</div>
+<div class="float" style="left:20%; animation-delay:2s;">💗</div>
+<div class="float" style="left:28%; animation-delay:3s;">🌸</div>
+<div class="float" style="left:36%; animation-delay:1.5s;">💖</div>
+<div class="float" style="left:44%; animation-delay:2.8s;">🌸</div>
+<div class="float" style="left:52%; animation-delay:0.8s;">❤️</div>
+<div class="float" style="left:60%; animation-delay:3.5s;">💛</div>
+<div class="float" style="left:68%; animation-delay:2.2s;">🌸</div>
+<div class="float" style="left:76%; animation-delay:4s;">💗</div>
+<div class="float" style="left:84%; animation-delay:1.8s;">🌸</div>
+<div class="float" style="left:92%; animation-delay:3.2s;">❤️</div>
+
+<!-- Envelope -->
+<div class="envelope" id="env">
+
+  <div class="flap"></div>
+
+ <div class="letter">
+  <h2 style="margin-top: 0;">Hi Aswin 💕</h2>
+  <p style="font-size: 17px; line-height: 1.6;">
+    Four Valentine's Days Together!💗 <br>
+    & it still feels close to my heart!❤️🥺
+  </p>
+</div>
+
+
+
+  <div class="open-heart" onclick="openEnv()">❤️</div>
+
+</div>
+
+<script>
+function openEnv() {
+  document.getElementById("env").classList.add("open");
+}
+</script>
+
+</body>
+</html>
