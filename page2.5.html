@@ -1,0 +1,96 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructions</title>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #fce4ec; /* soft pink */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Georgia, serif;
+  overflow: hidden;
+}
+
+#modal {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(244,166,193,0.5);
+  text-align: center;
+  max-width: 90%;
+  width: 350px;
+  animation: fadeIn 1s ease;
+}
+
+#modal h1 {
+  font-size: 22px;
+  color: #d53f72;
+  margin-bottom: 15px;
+}
+
+#modal p {
+  font-size: 18px;
+  color: #555;
+  line-height: 1.5;
+}
+
+#startBtn {
+  margin-top: 20px;
+  float: right;
+  background: #d6336c;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 0 12px rgba(244,166,193,0.6);
+  transition: transform 0.2s;
+}
+#startBtn:active { transform: scale(0.95); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95);}
+  to { opacity: 1; transform: scale(1);}
+}
+</style>
+</head>
+<body>
+
+<!-- Pop sound -->
+<audio id="popSound" src="pop.wav"></audio>
+
+<div id="modal">
+  <h1>Pick A teddy... carefully! 😏🧸</h1>
+  <p>There are 9 teddies 🧸
+     3 hidden rewards 🎁
+     3 are safe 💕
+     3 are bombs 💣
+
+     Find all 3 rewards to win…
+     But if you click 3 bombs...you're out! 😤😂</p>
+  <button id="startBtn">Go Panda! 😚🐼</button>
+</div>
+
+<script>
+const popSound = document.getElementById('popSound');
+
+document.getElementById('startBtn').addEventListener('click', function(){
+    // Play pop sound
+    popSound.currentTime = 0;
+    popSound.play();
+
+    // Redirect shortly after playing sound (0.3s delay)
+    setTimeout(() => {
+        window.location.href = "page3.html";
+    }, 300);
+});
+</script>
+
+</body>
+</html>

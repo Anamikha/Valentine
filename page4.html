@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Note 💌</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffeaf4, #ffd9ec);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Center Modal */
+.note-box {
+  background: white;
+  width: 75%;
+  max-width: 320px;
+  min-height: 250px;
+  border-radius: 25px;
+  padding: 35px 25px 65px 25px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 70px rgba(255, 105, 180, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fade In Animation */
+.note-text {
+  font-size: 23px;
+  font-weight: 600;
+  color: #ff4da6;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* Button */
+.read-btn {
+  position: absolute;
+  bottom: 22px;
+  right: 25px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 25px;
+  background: #ff4da6;
+  color: white;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(255, 105, 180, 0.7);
+  transition: 0.3s ease;
+}
+
+.read-btn:hover {
+  background: #ff3399;
+  transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+<audio id="popSound" src="pop.wav"></audio>
+
+<div class="note-box">
+  <div class="note-text">
+    I wrote a little something for you, 🥰<br>
+    I hope you like it! 🥹🤍
+  </div>
+
+  <!-- Updated onclick -->
+  <button class="read-btn" onclick="goNext()">Read it..💌</button>
+</div>
+
+<script>
+const popSound = document.getElementById('popSound');
+
+function goNext() {
+    // Play pop sound from start
+    popSound.currentTime = 0;
+    popSound.play();
+
+    // Redirect after 0.3 seconds to allow sound to play
+    setTimeout(() => {
+        window.location.href = "page5.html"; // Redirect to your poem page
+    }, 300);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>It’s Always You 💖</title>
+
+<!-- Softer Romantic Font -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ffeaf4, #ffd9ec);
+  font-family: 'Playfair Display', serif;
+}
+
+/* Floating Emojis */
+.floating {
+  position: fixed;
+  top: -20px;
+  pointer-events: none;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+/* Modal */
+.poem-box {
+  background: white;
+  width: 88%;
+  max-width: 360px;
+  border-radius: 25px;
+  padding: 35px 25px 70px 25px;
+  text-align: center;
+  position: relative;
+  box-shadow: 
+    0 0 25px rgba(255,182,193,0.8),
+    0 0 45px rgba(244,166,193,0.7),
+    0 0 70px rgba(244,166,193,0.6),
+    0 0 100px rgba(255,192,203,0.4);
+}
+
+/* Heading */
+.poem-heading {
+  font-size: 26px;
+  font-weight: 600;
+  color: #ff4da6;
+  margin-bottom: 18px;
+  font-style: italic;
+}
+
+/* Poem */
+.poem-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ff4da6;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+/* Button */
+.next-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: #ff4da6;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(255, 105, 180, 0.6);
+  transition: 0.3s ease;
+}
+
+.next-btn:hover {
+  background: #ff3399;
+  transform: scale(1.05);
+}
+</style>
+</head>
+
+<body>
+<audio id="bgMusic" src="song.mp3" loop autoplay></audio>
+<audio id="popSound" src="pop.wav"></audio> <!-- Added pop sound audio -->
+
+<div class="poem-box">
+  <div class="poem-heading">It’s Always You ✨</div>
+
+  <div class="poem-text">
+   <br> Out of everyone,<br>
+    Out of everything,<br>
+    Out of every possibility...<br><br>
+
+    It’s you.<br>
+    It's always you.<br><br>
+
+    Not just today.<br>
+    Not just in this moment.<br><br>
+
+    But always.<br>
+    And forever.<br><br>
+
+    I love you ♥️
+  </div>
+
+  <button class="next-btn" onclick="goNext()">One last surprise..😏</button>
+</div>
+
+<script>
+const bgMusic = document.getElementById('bgMusic');
+const popSound = document.getElementById('popSound'); // Pop sound element
+
+// Play background music (may be blocked)
+window.addEventListener('load', () => {
+    bgMusic.play().catch(() => {
+        console.log("Autoplay blocked, will play on user interaction.");
+    });
+});
+
+// Guaranteed play on first interaction (iOS)
+document.body.addEventListener('click', startMusic, { once: true });
+document.body.addEventListener('touchstart', startMusic, { once: true });
+
+function startMusic() {
+    bgMusic.play().catch(() => console.log("Still blocked"));
+}
+
+// Updated goNext function to play pop sound before redirect
+function goNext() {
+  popSound.currentTime = 0;
+  popSound.play();
+
+  // Wait 0.3s to let sound play, then redirect
+  setTimeout(() => {
+    window.location.href = "page6.html";
+  }, 300);
+}
+
+/* Mixed Emoji Sparkle Shower */
+const emojis = ["✨", "💖", "🌸", "💕", "🩷","🦋"];
+
+function createFloating() {
+  const el = document.createElement("div");
+  el.classList.add("floating");
+  el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.fontSize = (14 + Math.random() * 12) + "px";
+  el.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+  document.body.appendChild(el);
+
+  setTimeout(() => {
+    el.remove();
+  }, 8000);
+}
+
+setInterval(createFloating, 350);
+
+</script>
+
+</body>
+</html>

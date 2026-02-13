@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Teddy Surprise</title>
+
+<style>
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #ffe6f0, #ffd6ec);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.counter {
+  margin-bottom: 30px;
+  font-weight: bold;
+  font-size: 18px;
+  color: #ff4da6;
+}
+
+.game-title {
+  margin-top: 60px;
+  margin-bottom: 20px;
+  font-size: 26px;
+  color: #ff4da6;
+  text-shadow: 0 0 15px rgba(255,105,180,0.5);
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  width: 90%;
+  max-width: 400px;
+  justify-items: center;
+}
+
+.teddy {
+  font-size: 75px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  text-shadow: 0 0 25px rgba(255, 105, 180, 0.6);
+  animation: float 3s ease-in-out infinite;
+}
+
+.teddy:active {
+  transform: scale(1.2);
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Flash */
+.flash {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,0,0,0.7);
+  animation: flashAnim 1.5s;
+}
+
+@keyframes flashAnim {
+  from {opacity:1;}
+  to {opacity:0;}
+}
+
+/* Center Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: white;
+  color: #ff4da6;
+  padding: 25px 30px;
+  border-radius: 25px;
+  font-size: 18px;
+  text-align: center;
+  max-width: 80%;
+  box-shadow: 0 0 25px rgba(255,105,180,0.5);
+}
+
+.sparkle {
+  position: fixed;
+  top: -20px;
+  font-size: 20px;
+  opacity: 0;
+  animation: sparkleFall 1.5s linear forwards;
+}
+
+@keyframes sparkleFall {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) scale(1.4);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<h2 class="game-title">Pick your teddy! 🧸</h2>
+
+<div class="counter">
+💣 Bombs: <span id="bombCount">0</span>/3 &nbsp;&nbsp;
+🎁 Rewards: <span id="surpriseCount">0</span>/3
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalText"></div>
+</div>
+
+<!-- Audio files -->
+<audio id="popSound" src="pop.wav"></audio>
+<audio id="bombSound" src="bomb.mp3"></audio>
+<audio id="winSound" src="winn.mp3"></audio>
+
+<script>
+const layout = [
+  "safe",
+  "bomb",
+  "reward1",
+  "reward2",
+  "safe",
+  "bomb",
+  "bomb",
+  "reward3",
+  "safe"
+];
+
+let bombCount = 0;
+let surpriseCount = 0;
+let gameOver = false;
+let modalActive = false;
+
+const grid = document.getElementById("grid");
+
+const popSound = document.getElementById("popSound");
+const bombSound = document.getElementById("bombSound");
+const winSound = document.getElementById("winSound");
+
+layout.forEach((type, index) => {
+  const teddy = document.createElement("div");
+  teddy.className = "teddy";
+  teddy.innerHTML = "🧸";
+
+  teddy.addEventListener("click", () => handleClick(teddy, type));
+  teddy.addEventListener("touchstart", () => handleClick(teddy, type));
+
+  grid.appendChild(teddy);
+});
+
+function handleClick(teddy, type) {
+  if (gameOver || modalActive || teddy.dataset.clicked) return;
+  teddy.dataset.clicked = true;
+
+  // Play corresponding sound
+  if (type === "safe") {
+    popSound.currentTime = 0;
+    popSound.play();
+    showModal("Phew! Safe teddy! ☺️ Go ahead! 💗");
+  }
+
+  if (type === "bomb") {
+    teddy.innerHTML = "💣";
+    bombSound.currentTime = 0;
+    bombSound.play();
+    bombCount++;
+    document.getElementById("bombCount").innerText = bombCount;
+    flashScreen();
+
+    if (bombCount === 3) {
+      loseGame();
+    } else {
+      showModal("Boom..! 🫨💣 That’s one bomb 🫣☠️");
+    }
+  }
+
+  if (type.startsWith("reward")) {
+    surpriseCount++;
+    winSound.currentTime = 0;
+    winSound.play();
+    document.getElementById("surpriseCount").innerText = surpriseCount;
+
+    if (type === "reward1") {
+      teddy.innerHTML = "🍛";
+      showModal("🎁 Reward Unlocked: Soya chunks biriyani! 🍛");
+    }
+    if (type === "reward2") {
+      teddy.innerHTML = "😘";
+      showModal("🎁 Reward Unlocked: 100 Kisses & Chikubi! 😘💖");
+    }
+    if (type === "reward3") {
+      teddy.innerHTML = "🍰";
+      showModal("🎁 Reward Unlocked:Tres Leches 🍰 or Pistachio Salankatia 💚🥰");
+    }
+
+    if (surpriseCount === 3) {
+      winGame();
+    }
+  }
+}
+
+function showModal(message) {
+  modalActive = true;
+  const overlay = document.getElementById("modalOverlay");
+  const text = document.getElementById("modalText");
+
+  text.innerHTML = message;
+  overlay.style.display = "flex";
+
+  setTimeout(() => {
+    overlay.style.display = "none";
+    modalActive = false;
+  }, 1800);
+}
+
+function flashScreen() {
+  const flash = document.createElement("div");
+  flash.className = "flash";
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 1500);
+}
+
+function revealAll() {
+  document.querySelectorAll(".teddy").forEach((teddy, i) => {
+    if (!teddy.dataset.clicked) {
+      const type = layout[i];
+      if (type === "bomb") teddy.innerHTML = "💣";
+      if (type === "reward1") teddy.innerHTML = "🍛";
+      if (type === "reward2") teddy.innerHTML = "😘";
+      if (type === "reward3") teddy.innerHTML = "🍰";
+    }
+  });
+}
+
+function loseGame() {
+  gameOver = true;
+  revealAll();
+  showModal("OH NOOOOO! GAME OVER 😈 You missed your favourite redeemable rewards! 🤯");
+
+  setTimeout(() => {
+    window.location.href = "page4.html";
+  }, 3000);
+}
+
+function winGame() {
+  gameOver = true;
+  revealAll();
+  sparkleShower();
+  showModal("Mission complete… rewards secured! 🥳🤩");
+
+  setTimeout(() => {
+    window.location.href = "page4.html";
+  }, 3000);
+}
+
+function sparkleShower() {
+  for (let i = 0; i < 40; i++) {
+    const sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+    sparkle.innerHTML = "✨";
+
+    sparkle.style.left = Math.random() * window.innerWidth + "px";
+    sparkle.style.animationDelay = (Math.random() * 0.8) + "s";
+
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => sparkle.remove(), 2000);
+  }
+}
+</script>
+
+</body>
+</html>
